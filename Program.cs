@@ -6,29 +6,32 @@ namespace ExcelAdaptation
     {
         static void Main(string[] args)
         {
+            // Création d'une instance de DataRepository pour accéder à la base de données
             DataRepository repository = new DataRepository("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=XunitTest;" +
                                                             "Integrated Security=True;Connect Timeout=30;Encrypt=False;");
 
+            // Chemin du fichier Excel à importer
             string filePath = "test\\test.xlsx";
 
             try
             {
+                // Ouverture du fichier Excel en mode lecture
                 using (var stream = new MemoryStream())
                 {
-                    //Opening the file
                     using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
+                        // Copie du contenu du fichier Excel dans un MemoryStream
                         fileStream.CopyTo(stream);
                     }
 
-                    //Define working Excel Worksheet
+                    // Définition de la feuille de calcul Excel à utiliser
                     using var package = new ExcelPackage(stream);
                     ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
 
-                    //Counting rows
+                    // Comptage du nombre de lignes dans la feuille de calcul
                     int rowCount = worksheet.Dimension.Rows;
 
-                    //For each row, add the value in third column in the database
+                    // Pour chaque ligne, ajout de la valeur de la troisième colonne dans la base de données
                     for (int row = 2; row <= rowCount; row++)
                     {
                         string Name = worksheet.Cells[row, 3].Value?.ToString();
@@ -40,6 +43,7 @@ namespace ExcelAdaptation
             }
             catch (Exception er)
             {
+                // Affichage d'un message d'erreur en cas d'échec de l'importation
                 Console.WriteLine("Une erreur s'est produite lors de l'importation :" + er.Message);
             }
         }

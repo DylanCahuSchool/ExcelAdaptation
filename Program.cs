@@ -6,10 +6,10 @@ namespace ExcelAdaptation
     {
         static void Main(string[] args)
         {
-            DataRepository repository = new DataRepository("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NameOfDataBase;" +
+            DataRepository repository = new DataRepository("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=XunitTest;" +
                                                             "Integrated Security=True;Connect Timeout=30;Encrypt=False;");
 
-            string filePath = "Path\\To\\File.xlsx";
+            string filePath = "test\\test.xlsx";
 
             try
             {
@@ -34,7 +34,7 @@ namespace ExcelAdaptation
                         string Name = worksheet.Cells[row, 3].Value?.ToString();
                         TestObject rowModel = new TestObject(Name);
                         repository.AddTestObject(rowModel);
-                        Console.WriteLine(rowModel.ToString() + "Ajouté avec succés");
+                        Console.WriteLine(rowModel.ToString() + " Ajouté avec succés");
                     }
                 }
             }
